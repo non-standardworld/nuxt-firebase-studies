@@ -1,4 +1,6 @@
 module.exports = {
+  //spaモードで動かす
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -36,4 +38,3 @@ module.exports = {
     }
   }
 }
-
