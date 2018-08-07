@@ -1,22 +1,17 @@
 <template>
+
   <section class="container">
     <div>
       <app-logo/>
       <h1 class="title">
-        nuxt-firebase-studies
+        {{name}}
       </h1>
       <h2 class="subtitle">
         Nuxt.jsとFirebaseを使って簡単なWebサービスを作るテストです。
       </h2>
+
       <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green">Documentation</a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey">GitHub</a>
+        <button @click="googleLogin">googleでログイン</button>
       </div>
     </div>
   </section>
@@ -24,10 +19,32 @@
 
 <script>
 import AppLogo from '~/components/AppLogo.vue'
+import firebase from '@/plugins/firebase'
 
 export default {
   components: {
     AppLogo
+  },
+  asyncData (context) {
+    // コンポーネントをロードする前に毎回呼び出されます
+    return { name: 'Hello, World！！' }
+  },
+  fetch () {
+    // `fetch` メソッドはページの描画前にストアを満たすために使用されます
+  },
+  head: {
+    meta: [
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto' }
+    ]
+  },
+  methods: {
+    googleLogin: function() {
+      firebase.auth().signInWithRedirect(new firebase.auth.GoogleAuthProvider());
+    }
   }
 }
 </script>
@@ -62,4 +79,3 @@ export default {
   padding-top: 15px;
 }
 </style>
-
