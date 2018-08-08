@@ -1,5 +1,4 @@
 <template>
-
   <section class="container">
     <div>
       <app-logo/>
@@ -11,26 +10,44 @@
       </h2>
 
       <div class="links">
-        <button @click="googleLogin">googleでログイン</button>
+        <Home v-if="!isLogin"></Home>
+        <Mypage v-if="isLogin" :user="userData"></Mypage>
       </div>
     </div>
   </section>
 </template>
 
 <script>
+
 import AppLogo from '~/components/AppLogo.vue'
 import firebase from '@/plugins/firebase'
+import Home from '~/components/Home.vue';
+import Mypage from '~/components/Mypage.vue';
 
 export default {
   components: {
-    AppLogo
+    AppLogo,
+    Home,
+    Mypage
   },
   asyncData (context) {
     // コンポーネントをロードする前に毎回呼び出されます
-    return { name: 'Hello, World！！' }
+    return { name: 'Hello, World！！', isLogin:false, userData:null}
   },
   fetch () {
     // `fetch` メソッドはページの描画前にストアを満たすために使用されます
+  },
+  mounted: function() {
+    firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.isLogin = true;
+        this.userData = user;
+      } else {
+        this.isLogin = false;
+        this.userData = null;
+      };
+    });
   },
   head: {
     meta: [
