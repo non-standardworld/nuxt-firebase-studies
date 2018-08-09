@@ -1,7 +1,5 @@
 <template>
-  <div class="home">
     <button @click="googleLogin">googleでログイン</button>
-  </div>
 </template>
 
 <script>
