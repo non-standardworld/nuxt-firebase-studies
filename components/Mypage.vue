@@ -2,16 +2,15 @@
 <div id="mypage">
   <span>こんにちは, {{ user.displayName }}さん</span>
   <p><button @click="logout">ログアウト</button></p>
-  <h2>入力されたノート</h2>
+  <h2>あなたのノート</h2>
   <p>{{ note_content }}</p>
-  <p><textarea v-model="note_content"></textarea></p>
-    <p><button class="saveNoteBtn" @click="saveContent(note_content)">ノートの保存</button></p>
-  <h2>保存されたノート</h2>
-  <div class="noteList" v-for="note in notes" :key="note.content">
-    <p class="noteContent">{{ note }}</p>
+  <div id='notesIndex' v-for="note in notes" :key="note.content">
+
+    <p class="noteContent">{{ note.content }}</p>
   </div>
-
-
+  <h2>入力されたノート</h2>
+  <p><textarea v-model="note_content"></textarea></p>
+    <p><button class="saveNoteBtn" @click="saveContent(note_content)">ノートを保存する</button></p>
 </div>
 </template>
 
@@ -40,9 +39,11 @@ export default {
       firebase.auth().signOut();
     },
     saveContent: function(value) {
+      // Get a key for a new Post.
+      var newNoteKey = firebase.database().ref().child('notes').push().key;
       firebase
         .database()
-        .ref('notes/' + this.user.uid)
+        .ref('notes/' + this.user.uid　+ '/' + newNoteKey)
         .set({content:value});
     }
   }
